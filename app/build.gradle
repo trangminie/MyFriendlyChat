@@ -1,0 +1,84 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion build_versions.compile_sdk
+    buildToolsVersion build_versions.build_tools
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId "com.udacity.myfriendlychat"
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // test
+    testImplementation deps.test.junit
+    androidTestImplementation deps.test.runner
+    androidTestImplementation deps.test.espresso_core
+
+    // support
+    implementation deps.support.annotations
+    implementation deps.support.app_compat
+    implementation deps.support.recyclerview
+    implementation deps.support.material
+
+    implementation deps.constraintLayout.lib
+
+    // dagger
+    implementation deps.dagger.core
+    implementation deps.dagger.android_support
+    kapt deps.dagger.compiler
+    kapt deps.dagger.android_processor
+    annotationProcessor deps.dagger.compiler
+    annotationProcessor deps.dagger.android_processor
+
+    // lifecycle
+    implementation deps.lifecycle.runtime
+    implementation deps.lifecycle.extensions
+    annotationProcessor deps.lifecycle.compiler
+    implementation deps.lifecycle.viewmodel
+    implementation deps.lifecycle.viewmodel_ktx
+    api deps.lifecycle.viewmodel_ktx
+
+    //glide
+    api deps.glide.core
+    kapt deps.glide.compiler
+
+    // single lib
+    implementation deps.kotlin.stdlib7
+
+    //firebase
+    implementation deps.fire_base.core
+    implementation deps.fire_base.realtime_db
+    implementation deps.fire_base.ui_auth
+    implementation deps.fire_base.storage
+    implementation deps.fire_base.message
+    implementation deps.fire_base.config
+
+    api project(path: ':domain')
+}
+apply plugin: 'com.google.gms.google-services'
